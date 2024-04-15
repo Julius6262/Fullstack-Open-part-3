@@ -20,18 +20,17 @@ app.get('/info', (request, response) => {
 });
 
 
-/*
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  const note = notes.find(note => note.id === id)
+  const person = phonebook.find(pb => pb.id === id)
 
-  if (note){
-    response.json(note)
+  if (person){
+    response.json(person)
   } else{
     response.status(404).end()
   }
 })
-*/
+
 /*
 app.delete('/api/notes/:id', (request, response) => {
   const id = Number(request.params.id)
