@@ -7,9 +7,15 @@ const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
-app.use(morgan('tiny'))
+
 /*The 'tiny' argument is a predefined format string that tells morgan what information to include in the logs. 
 The 'tiny' format includes the method, URL, status, response time, and content length.*/
+
+// Define a new token 'body' that gets the request body
+morgan.token('body', function (req, res) { return JSON.stringify(req.body) });
+
+// Use morgan middleware with custom format instead of app.use(morgan('tiny'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
 
 app.get('/api/persons', (request, response) => {
