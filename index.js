@@ -55,7 +55,7 @@ const generateId = () => {
   
 app.post('/api/persons', (request, response) => {
   const body = request.body
-  
+
   if (!body.name || !body.number) {
     return response.status(400).json({ 
       error: 'name or number missing' 
@@ -70,7 +70,7 @@ app.post('/api/persons', (request, response) => {
   }
 
   phonebook = phonebook.concat(pb)
-
+  // for the cilent to use in the future
   response.json(pb)
 })
 
