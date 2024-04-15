@@ -1,4 +1,4 @@
-const phonebook = require('./phonebook') // CommonJS modules
+let phonebook = require('./phonebook') // CommonJS modules
 const { numberOfEntries, requestTime } = require('./dataAboutPhonebook');
 
 const express = require('express')
@@ -31,14 +31,22 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
-/*
-app.delete('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
 
-  response.status(204).end()
-})
-*/
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id);
+  const initialLength = phonebook.length;
+  phonebook = phonebook.filter(pb => pb.id !== id);
+
+
+  if (initialLength === phonebook.length) {
+    console.log('ID not found in phonebook:', id);
+    return response.status(404).send({ error: 'unknown id' });
+  }
+
+  response.status(204).end();
+});
+
+
 /*
 const generateId = () => {
     const maxId = notes.length > 0
