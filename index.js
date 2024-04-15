@@ -2,9 +2,14 @@ let phonebook = require('./phonebook') // CommonJS modules
 const { numberOfEntries, requestTime } = require('./dataAboutPhonebook');
 
 const express = require('express')
+const morgan = require('morgan')
+
 const app = express()
 
 app.use(express.json())
+app.use(morgan('tiny'))
+/*The 'tiny' argument is a predefined format string that tells morgan what information to include in the logs. 
+The 'tiny' format includes the method, URL, status, response time, and content length.*/
 
 
 app.get('/api/persons', (request, response) => {
@@ -61,18 +66,29 @@ app.post('/api/persons', (request, response) => {
       error: 'name or number missing' 
     })
   }
-
+  // some returns true when the condition is met, and not an array of the true values like filter
+  if (phonebook.some(pb => pb.name === body.name)) {
+    return response.status(400).json({ 
+      error: 'name must be unique'
+    })
+  }
+    
+  if (phonebook.some(pb => pb.number === body.number)) {
+    return response.status(400).json({ 
+      error: 'number must be unique' 
+    })
+  }
+  
   const pb = {
     id: generateId(),
-    name: body.name, //name
+    name: body.name,
     number: body.number
-    
   }
 
   phonebook = phonebook.concat(pb)
-  // for the cilent to use in the future
   response.json(pb)
 })
+
 
 const PORT = 3001
 app.listen(PORT, () => {
